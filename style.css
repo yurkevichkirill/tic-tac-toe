@@ -1,0 +1,51 @@
+.board{
+    width: 300px;
+    height: 300px;
+    display: grid;
+    border-collapse: collapse;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr, 1fr, 1fr;
+    grid-template-areas: "el00 el01 el02"
+                         "el10 el11 el12"
+                         "el20 el21 el22";
+}
+
+.boardItem{
+    border: 3px solid black;
+}
+
+#el00{
+    grid-area: el00;
+}
+
+#el01{
+    grid-area: el01;
+}
+
+#el02{
+    grid-area: el02;
+}
+
+#el10{
+    grid-area: el10;
+}
+
+#el11{
+    grid-area: el11;
+}
+
+#el12{
+    grid-area: el12;
+}
+
+#el20{
+    grid-area: el20;
+}
+
+#el21{
+    grid-area: el21;
+}
+
+#el22{
+    grid-area: el22;
+}

@@ -1,5 +1,3 @@
-//ZHEKA - PENIS
-
 const Game = function(){
 
 }
@@ -13,8 +11,22 @@ function createPlayer(role, sign){
 }
 
 const GameBoard = function(){
-
+    console.log("Hello");
+    const board = document.createElement("div");
+    const body = document.querySelector("body");
+    body.appendChild(board);
+    board.className = 'board'
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            const boardItem = document.createElement("div");
+            boardItem.id = `el${i}${j}`;
+            boardItem.className = 'boardItem';
+            board.appendChild(boardItem);
+        }
+    }
 }
+
+GameBoard();
 
 function createGameboard(){
     return [[], [], []];
