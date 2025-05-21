@@ -1,34 +1,86 @@
-const Game = function(){
+const body = document.querySelector("body");
 
-}
+function chooseRoleDOM(){
+    const continueBtn = document.createElement("button");
+    continueBtn.textContent = "Make your step (x)";
 
-const Player = function(role, sign){
+    const changeSign = document.createElement("button");
+    changeSign.textContent = "Change sign (o)";
 
+    const btns = document.createElement("div");
+    body.appendChild(btns);
+
+    btns.appendChild(continueBtn);
+    btns.appendChild(changeSign);
+
+    continueBtn.addEventListener("click", () => {
+        player1.sign = 'x';
+        player2.sign = 'o';
+        console.log(player1.sign);
+        console.log(player2.sign);
+    })
+
+    changeSign.addEventListener('click', () => {
+        player1.sign = 'o';
+        player2.sign = 'x';
+        console.log(player1.sign);
+        console.log(player2.sign);
+    })
 }
 
 function createPlayer(role, sign){
     return {role, sign};
 }
 
-const GameBoard = function(){
-    console.log("Hello");
-    const board = document.createElement("div");
-    const body = document.querySelector("body");
-    body.appendChild(board);
-    board.className = 'board'
+function createBot(sign){
+    if(sign === 'x'){
+        return createPlayer('bot', 'o');
+    } else{
+        return createPlayer('bot', 'x');
+    }
+}
+
+function paintItem(boardItem, sign){
+    boardItem.textContent = sign;
+}
+
+const gameBoardDOM = function(){
+    const boardDOM = document.createElement("div");
+    boardDOM.className = 'board';
+    body.appendChild(boardDOM);
     for(let i = 0; i < 3; i++){
         for(let j = 0; j < 3; j++){
             const boardItem = document.createElement("div");
             boardItem.id = `el${i}${j}`;
             boardItem.className = 'boardItem';
-            board.appendChild(boardItem);
+            boardItem.addEventListener("click", () => {
+                const row = boardItem.id[2];
+                const col = boardItem.id[3];
+                if(gameBoard[row][col] === undefined){
+                    gameBoard[row][col] = player1.sign;
+                    boardItem.textContent = player1.sign;
+                }
+            });
+            boardDOM.appendChild(boardItem);
         }
     }
 }
 
-GameBoard();
+function computerMove(){
+    while(true){
+        row = Math.floor(Math.random()*3);
+        col = Math.floor(Math.random()*3);
+        if(gameField[row][col] === undefined){
+            break;
+        }
+    }        
 
-function createGameboard(){
+    gameField[row][col] = 'o';
+    document.querySelector(`#el${row}${col}`).textContent = 'o';
+
+}
+
+function createGameBoard(){
     return [[], [], []];
 }
 
@@ -51,10 +103,11 @@ function winCheck(gameBoard){
     return 'draw';
 }
 
+const player1 = createPlayer('user', 'x');
+const player2 = createBot(player1.sign);
 
-function arrCheck(gameBoard){
-    if(gameBoard[0][0] === gameBoard[0][1] && gameBoard[0][1] === gameBoard[0][2]){
-        return gameBoard[0][0];
-    }
-}
-console.log(winCheck(arr));
+chooseRoleDOM();
+
+const gameBoard = createGameBoard();
+
+gameBoardDOM();
