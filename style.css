@@ -2,10 +2,14 @@ body{
     display: flex;
     align-items: center;
     flex-direction: column;
+    gap: 20px;
+}
+
+h1{
+    margin-bottom: 0;
 }
 
 .board{
-    margin-top: 20px;
     width: 500px;
     height: 500px;
     display: grid;
@@ -78,4 +82,17 @@ body{
 
 #el22{
     grid-area: el22;
+}
+
+.result{
+    width: 500px;
+    text-align: center;
+    font-size: 30px;
+    background-color: yellow;
+}
+
+.start{
+    font-size: 30px;
+    background-color: yellow;
+    border-radius: 5px;
 }

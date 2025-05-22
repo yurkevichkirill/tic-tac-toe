@@ -104,12 +104,36 @@ function createGameBoard(){
 }
 
 function result(){
+    const result = document.createElement("div");
+    result.className = 'result';
+    body.appendChild(result);
     if(winCheck() === "tie"){
-        alert("Tie. You can win next time)");
+        result.textContent = "Tie";
     }
     else{
-        alert(`${winCheck()} wins. It was hard game`);
+        result.textContent = `${winCheck()} wins. It was hard game`;
     }
+    const startNew = document.createElement("button");
+    startNew.textContent = "Start new game";
+    startNew.className = "start";
+    body.appendChild(startNew);
+    startNew.addEventListener("click", () => {
+        cleanBoard();
+        result.remove();
+        startNew.remove();
+    })
+
+}
+
+function cleanBoard(){
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            gameBoard[i][j] = undefined;
+            document.querySelector(`#el${i}${j}`).textContent = '';
+            finish = false;
+        }
+    }
+
 }
 
 function winCheck(){
@@ -123,7 +147,7 @@ function winCheck(){
     ){
         return gameBoard[1][1];
     }
-    for(let i = 0; i < 2; i++){
+    for(let i = 0; i < 3; i++){
         if(gameBoard[0][i] === gameBoard[1][i] && gameBoard[1][i] === gameBoard[2][i]){
             return gameBoard[0][i];
         }
