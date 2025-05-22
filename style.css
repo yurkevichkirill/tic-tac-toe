@@ -1,51 +1,79 @@
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 .board{
-    width: 300px;
-    height: 300px;
+    margin-top: 20px;
+    width: 500px;
+    height: 500px;
     display: grid;
     border-collapse: collapse;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr, 1fr, 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas: "el00 el01 el02"
                          "el10 el11 el12"
                          "el20 el21 el22";
 }
 
+.sign-choice{
+    display: flex;
+    gap: 5vw;
+}
+
+.sign-choice > button{
+    font-size: 20px;
+    border: 2px solid black;
+}
+
 .boardItem{
-    border: 3px solid black;
-    font-size: 100px;
-    
+    font-size: 140px;
+    text-align: center;   
 }
 
 #el00{
     grid-area: el00;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
 }
 
 #el01{
     grid-area: el01;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
 }
 
 #el02{
     grid-area: el02;
+    border-bottom: 3px solid black;
 }
 
 #el10{
     grid-area: el10;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
 }
 
 #el11{
     grid-area: el11;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
 }
 
 #el12{
     grid-area: el12;
+    border-bottom: 3px solid black;
 }
 
 #el20{
     grid-area: el20;
+    border-right: 3px solid black;
 }
 
 #el21{
     grid-area: el21;
+    border-right: 3px solid black;
 }
 
 #el22{

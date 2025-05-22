@@ -2,12 +2,14 @@ const body = document.querySelector("body");
 
 function chooseRoleDOM(){
     const continueBtn = document.createElement("button");
-    continueBtn.textContent = "Make your step (x)";
+    continueBtn.textContent = "X";
+    continueBtn.style.backgroundColor = "yellow";
 
     const changeSign = document.createElement("button");
-    changeSign.textContent = "Change sign (o)";
+    changeSign.textContent = "O";
 
     const btns = document.createElement("div");
+    btns.className = "sign-choice";
     body.appendChild(btns);
 
     btns.appendChild(continueBtn);
@@ -17,6 +19,8 @@ function chooseRoleDOM(){
         if(!isGameStart()){
             player1.sign = 'x';
             player2.sign = 'o';
+            continueBtn.style = "background-color: yellow";
+            changeSign.style = "background-color: #EFEFEF";
         }
     })
 
@@ -24,6 +28,8 @@ function chooseRoleDOM(){
         if(!isGameStart()){
             player1.sign = 'o';
             player2.sign = 'x';
+            changeSign.style = "background-color: yellow;";
+            continueBtn.style = "background-color: #EFEFEF;";
             computerMove();
         }
     })
@@ -39,10 +45,6 @@ function createBot(sign){
     } else{
         return createPlayer('bot', 'x');
     }
-}
-
-function paintItem(boardItem, sign){
-    boardItem.textContent = sign;
 }
 
 const gameBoardDOM = function(){
@@ -63,7 +65,7 @@ const gameBoardDOM = function(){
                         boardItem.textContent = player1.sign;
                         if(winCheck() != undefined){
                             finish = true;
-                            console.log(`${winCheck()} wins`);
+                            result();
                         }
                         else{
                             computerMove();
@@ -90,10 +92,10 @@ function computerMove(){
         }
     }     
     gameBoard[row][col] = player2.sign;
-    document.querySelector(`#el${row}${col}`).textContent = player2.sign;   
+    document.querySelector(`#el${row}${col}`).textContent = player2.sign;
     if(winCheck() != undefined){
         finish = true;
-        console.log(`${winCheck()} wins`);
+        result();
     }
 }
 
@@ -101,7 +103,14 @@ function createGameBoard(){
     return [[], [], []];
 }
 
-const arr = [['o', 'o', 'o'], ['x', 'o', 'x'], ['o', 'x', 'x']]
+function result(){
+    if(winCheck() === "tie"){
+        alert("Tie. You can win next time)");
+    }
+    else{
+        alert(`${winCheck()} wins. It was hard game`);
+    }
+}
 
 function winCheck(){
    for(element of gameBoard){
@@ -120,7 +129,7 @@ function winCheck(){
         }
     }
     if(isBoardFull()){
-        return 'draw';
+        return 'tie';
     }
     return undefined;
 }
