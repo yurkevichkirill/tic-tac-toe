@@ -54,12 +54,15 @@ const gameBoardDOM = function(){
             boardItem.id = `el${i}${j}`;
             boardItem.className = 'boardItem';
             boardItem.addEventListener("click", () => {
-                const row = boardItem.id[2];
-                const col = boardItem.id[3];
-                if(gameBoard[row][col] === undefined){
-                    gameBoard[row][col] = player1.sign;
-                    boardItem.textContent = player1.sign;
-                }
+                if(!isBoardFull()){
+                    const row = boardItem.id[2];
+                    const col = boardItem.id[3];
+                    if(gameBoard[row][col] === undefined){
+                        gameBoard[row][col] = player1.sign;
+                        boardItem.textContent = player1.sign;
+                    }
+                    computerMove();
+                }                
             });
             boardDOM.appendChild(boardItem);
         }
@@ -67,16 +70,21 @@ const gameBoardDOM = function(){
 }
 
 function computerMove(){
+    if(isBoardFull()){
+        return;
+    }
+    let row;
+    let col;
     while(true){
         row = Math.floor(Math.random()*3);
         col = Math.floor(Math.random()*3);
-        if(gameField[row][col] === undefined){
+        if(gameBoard[row][col] === undefined){
             break;
         }
     }        
 
-    gameField[row][col] = 'o';
-    document.querySelector(`#el${row}${col}`).textContent = 'o';
+    gameBoard[row][col] = player2.sign;
+    document.querySelector(`#el${row}${col}`).textContent = player2.sign;
 
 }
 
@@ -101,6 +109,28 @@ function winCheck(gameBoard){
         }
     }
     return 'draw';
+}
+
+function isBoardFull(){
+    let count = 0;
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            if(gameBoard[i][j] === undefined){
+                count++;
+            }
+        }
+    }
+    if(count === 0){
+        return true;
+    }
+    return false;
+}
+
+function game(){
+    if(player2.sign === 'x'){
+        computerMove();
+    }
+    
 }
 
 const player1 = createPlayer('user', 'x');
