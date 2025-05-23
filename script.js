@@ -50,32 +50,55 @@ function createBot(sign){
 const gameBoardDOM = function(){
     const boardDOM = document.createElement("div");
     boardDOM.className = 'board';
-    body.appendChild(boardDOM);
+    body.appendChild(boardDOM, boardDOM);
     for(let i = 0; i < 3; i++){
         for(let j = 0; j < 3; j++){
-            const boardItem = document.createElement("div");
-            boardItem.id = `el${i}${j}`;
-            boardItem.className = 'boardItem';
-            boardItem.addEventListener("click", () => {
-                if(!isBoardFull() && !finish){
-                    const row = boardItem.id[2];
-                    const col = boardItem.id[3];
-                    if(gameBoard[row][col] === undefined){
-                        gameBoard[row][col] = player1.sign;
-                        boardItem.textContent = player1.sign;
-                        if(winCheck() != undefined){
-                            finish = true;
-                            result();
-                        }
-                        else{
-                            computerMove();
-                        }
-                    }
-                }                
-            });
-            boardDOM.appendChild(boardItem);
+            createBoardItem(i, j, boardDOM);
         }
     }
+}
+
+function createBoardItem(i, j, boardDOM){
+    const boardItem = document.createElement("div");
+    boardItem.id = `el${i}${j}`;
+    boardItem.className = 'boardItem';
+    boardItem.addEventListener("click", () => {
+        playerMove(player1, boardItem);    
+    });
+    boardDOM.appendChild(boardItem);
+}
+
+function playerMove(player, boardItem){
+    if(!isBoardFull() && !finish){
+        const row = boardItem.id[2];
+        const col = boardItem.id[3];
+        if(gameBoard[row][col] === undefined){
+            gameBoard[row][col] = player.sign;
+            boardItem.textContent = player.sign;
+            if(player.sign === 'x'){
+                player1.sign = 'o'
+            }
+            else{
+                player1.sign = 'x';
+            }
+            if(duo === false){
+                if(winCheck() != undefined){
+                    finish = true;
+                    result();
+                }
+                else{
+                    computerMove();
+                }
+            }
+            else{
+                if(winCheck() != undefined){
+                    finish = true;
+                    result();
+                }
+            }
+            
+        }
+    }                
 }
 
 function computerMove(){
@@ -122,7 +145,6 @@ function result(){
         result.remove();
         startNew.remove();
     })
-
 }
 
 function cleanBoard(){
@@ -184,12 +206,69 @@ function isGameStart(){
     return false;
 }
 
+function playDuo(){
+    const playDuo = document.createElement("button");
+    playDuo.textContent = "Play with friend";
+    playDuo.className = "start";
+    body.appendChild(playDuo);
+    playDuo.addEventListener("click", () => {
+        playDuoDOM();
+        playDuo.remove();
+    })
+}
+
+function playDuoDOM(){
+    const names = document.createElement("div");
+    const name1Div = document.createElement("div");
+    const name2Div = document.createElement("div");
+
+    const startBtn = document.createElement("button");
+    startBtn.textContent = "Start";
+
+    const name1Label = document.createElement("label")
+    name1Label.setAttribute("for", "name1");
+    name1Label.textContent = "1 Player's name (x)"
+    const name1Input = document.createElement("input");
+    name1Input.id = "name1";
+
+    name1Div.appendChild(name1Label);
+    name1Div.appendChild(name1Input);
+
+    const name2Label = document.createElement("label");
+    name2Label.setAttribute("for", "name2");
+    name2Label.textContent = "2 Player's name (o)";
+    const name2Input = document.createElement("input");
+    name2Input.id = "name2";
+
+    name2Div.appendChild(name2Label);
+    name2Div.appendChild(name2Input);
+
+    names.appendChild(name1Div);
+    names.appendChild(name2Div);
+
+    body.appendChild(names);
+    body.appendChild(startBtn);
+
+    startBtn.addEventListener("click", () => {
+        player1.role = name1Input.value;
+        player2.role = name2Input.value;
+        console.log(player1.role);
+        console.log(player2.role);
+        duo = true;
+        player2.sign = 'o';
+    })
+
+}
+
+let duo = false;
 let finish = false;
-const player1 = createPlayer('user', 'x');
-const player2 = createBot(player1.sign);
+let player1 = createPlayer('user', 'x');
+let player2 = createBot(player1.sign);
 
 chooseRoleDOM();
 
 const gameBoard = createGameBoard();
 
 gameBoardDOM();
+
+playDuo();
