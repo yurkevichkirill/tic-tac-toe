@@ -129,7 +129,12 @@ function createGameBoard(){
 function result(){
     const result = document.createElement("div");
     result.className = 'result';
-    body.appendChild(result);
+    const playDuo = document.querySelector("#play-duo");
+    if(playDuo){
+        body.insertBefore(result, playDuo);
+    } else{
+        body.appendChild(result);
+    }
     const name1Input = document.querySelector("#name1");
     const name2Input = document.querySelector("#name2");
     if(duo === false || (duo === true && name1Input && name2Input &&(name1Input.value === "" || name2Input.value === ""))){
@@ -145,7 +150,7 @@ function result(){
             result.textContent = "Tie";
         }
         else{
-            result.textContent = `${(winCheck() === player1.sign)?player1.role:player2.role} wins. It was hard game`;
+            result.textContent = `${(winCheck() === 'x')?name1Input.value:name2Input.value} wins. It was hard game`;
         }
     }
     
@@ -159,14 +164,8 @@ function result(){
         subBtn.remove();
     }
 
-    const startNew = document.createElement("button");
-    startNew.textContent = "Start new game";
-    startNew.className = "start";
-    startNew.id = "start-new";
-    body.appendChild(startNew);
-
+    const playBot = document.createElement("button");
     if(duo === true){
-        const playBot = document.createElement("button");
         playBot.id = "play-bot";
         playBot.textContent = "Play with bot";
         body.appendChild(playBot);
@@ -176,11 +175,22 @@ function result(){
             result.remove();
             startNew.remove();
             playBot.remove();
-            playDuo();
+            player1.sign = 'x';
+            player2.sign = 'o';
         })        
     }
+    else if(!playDuo){
+        duoGame();
+    }
+    const startNew = document.createElement("button");
+    startNew.textContent = "Start new game";
+    startNew.className = "start";
+    startNew.id = "start-new";
+    body.appendChild(startNew);
     
     startNew.addEventListener("click", () => {
+        player1.sign = 'x';
+        player2.sign = 'o';
         cleanBoard();
         if(names){
             body.appendChild(names);
@@ -190,6 +200,7 @@ function result(){
         }
         result.remove();
         startNew.remove();
+        playBot.remove();
     })
 }
 
@@ -252,7 +263,7 @@ function isGameStart(){
     return false;
 }
 
-function playDuo(){
+function duoGame(){
     const playDuo = document.createElement("button");
     playDuo.textContent = "Play with friend";
     playDuo.className = "start";
@@ -335,4 +346,4 @@ const gameBoard = createGameBoard();
 
 gameBoardDOM();
 
-playDuo();
+duoGame();
