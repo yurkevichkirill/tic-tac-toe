@@ -75,12 +75,6 @@ function playerMove(player, boardItem){
         if(gameBoard[row][col] === undefined){
             gameBoard[row][col] = player.sign;
             boardItem.textContent = player.sign;
-            if(player.sign === 'x'){
-                player1.sign = 'o'
-            }
-            else{
-                player1.sign = 'x';
-            }
             if(duo === false){
                 if(winCheck() != undefined){
                     finish = true;
@@ -91,6 +85,12 @@ function playerMove(player, boardItem){
                 }
             }
             else{
+                if(player.sign === 'x'){
+                    player1.sign = 'o'
+                }
+                else{
+                    player1.sign = 'x';
+                }
                 if(winCheck() != undefined){
                     finish = true;
                     result();
@@ -130,18 +130,64 @@ function result(){
     const result = document.createElement("div");
     result.className = 'result';
     body.appendChild(result);
-    if(winCheck() === "tie"){
-        result.textContent = "Tie";
+    const name1Input = document.querySelector("#name1");
+    const name2Input = document.querySelector("#name2");
+    if(duo === false || (duo === true && name1Input && name2Input &&(name1Input.value === "" || name2Input.value === ""))){
+        if(winCheck() === "tie"){
+            result.textContent = "Tie";
+        }
+        else{
+            result.textContent = `${winCheck()} wins. It was hard game`;
+        }
     }
     else{
-        result.textContent = `${winCheck()} wins. It was hard game`;
+        if(winCheck() === "tie"){
+            result.textContent = "Tie";
+        }
+        else{
+            result.textContent = `${(winCheck() === player1.sign)?player1.role:player2.role} wins. It was hard game`;
+        }
     }
+    
+    const names = document.querySelector("#names");
+    if(names){
+        names.remove();
+    }
+
+    const subBtn = document.querySelector("#submit-names");
+    if(subBtn){
+        subBtn.remove();
+    }
+
     const startNew = document.createElement("button");
     startNew.textContent = "Start new game";
     startNew.className = "start";
+    startNew.id = "start-new";
     body.appendChild(startNew);
+
+    if(duo === true){
+        const playBot = document.createElement("button");
+        playBot.id = "play-bot";
+        playBot.textContent = "Play with bot";
+        body.appendChild(playBot);
+        playBot.addEventListener("click", () => {
+            duo = false;            
+            cleanBoard();
+            result.remove();
+            startNew.remove();
+            playBot.remove();
+            playDuo();
+        })        
+    }
+    
     startNew.addEventListener("click", () => {
         cleanBoard();
+        if(names){
+            body.appendChild(names);
+        }
+        if(subBtn){
+            body.appendChild(subBtn);
+        }
         result.remove();
         startNew.remove();
     })
@@ -210,6 +256,7 @@ function playDuo(){
     const playDuo = document.createElement("button");
     playDuo.textContent = "Play with friend";
     playDuo.className = "start";
+    playDuo.id = "play-duo";
     body.appendChild(playDuo);
     playDuo.addEventListener("click", () => {
         playDuoDOM();
@@ -218,12 +265,17 @@ function playDuo(){
 }
 
 function playDuoDOM(){
+    cleanBoard();
+    duo = true;
+
     const names = document.createElement("div");
+    names.id = "names";
     const name1Div = document.createElement("div");
     const name2Div = document.createElement("div");
 
-    const startBtn = document.createElement("button");
-    startBtn.textContent = "Start";
+    const subBtn = document.createElement("button");
+    subBtn.id = "submit-names";
+    subBtn.textContent = "Submit";
 
     const name1Label = document.createElement("label")
     name1Label.setAttribute("for", "name1");
@@ -247,14 +299,26 @@ function playDuoDOM(){
     names.appendChild(name2Div);
 
     body.appendChild(names);
-    body.appendChild(startBtn);
+    body.appendChild(subBtn);
 
-    startBtn.addEventListener("click", () => {
+    const result = document.querySelector(".result");
+    if(result){
+        result.remove();
+    }
+
+    const startNew = document.querySelector("#start-new");
+    if(startNew){
+        startNew.remove();
+    }
+
+    const playDuo = document.querySelector("#play-duo");
+    if(playDuo){
+        playDuo.remove();
+    }
+
+    subBtn.addEventListener("click", () => {
         player1.role = name1Input.value;
         player2.role = name2Input.value;
-        console.log(player1.role);
-        console.log(player2.role);
-        duo = true;
         player2.sign = 'o';
     })
 
