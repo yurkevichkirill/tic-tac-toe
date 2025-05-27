@@ -33,7 +33,13 @@ h1{
 
 .boardItem{
     font-size: 140px;
-    text-align: center;   
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.boardItem:hover{
+    background-color: rgb(255, 254, 208);
 }
 
 #el00{
@@ -91,8 +97,22 @@ h1{
     background-color: yellow;
 }
 
-.start{
+button{
     font-size: 30px;
     background-color: yellow;
     border-radius: 5px;
+}
+
+label{
+    font-size: 30px;
+    background-color: yellow;
+    margin-right: 10px;
+}
+
+.name1{
+    margin-bottom: 5px;
+}
+
+input{
+    font-size: 24px;
 }

@@ -1,38 +1,41 @@
 const body = document.querySelector("body");
 
 function chooseRoleDOM(){
-    const continueBtn = document.createElement("button");
-    continueBtn.textContent = "X";
-    continueBtn.style.backgroundColor = "yellow";
+    const xBtn = document.createElement("button");
+    xBtn.id = "x-button";
+    xBtn.textContent = "X";
+    xBtn.style.backgroundColor = "yellow";
 
-    const changeSign = document.createElement("button");
-    changeSign.textContent = "O";
+    const oBtn = document.createElement("button");
+    oBtn.id = "o-button";
+    oBtn.textContent = "O";
+    oBtn.style.backgroundColor = "#EFEFEF";
 
     const btns = document.createElement("div");
     btns.className = "sign-choice";
     body.appendChild(btns);
 
-    btns.appendChild(continueBtn);
-    btns.appendChild(changeSign);
+    btns.appendChild(xBtn);
+    btns.appendChild(oBtn);
 
-    continueBtn.addEventListener("click", () => {
-        if(!isGameStart()){
+    xBtn.addEventListener("click", () => {
+        if(!isGameStart() && !duo){
             player1.sign = 'x';
             player2.sign = 'o';
-            continueBtn.style = "background-color: yellow";
-            changeSign.style = "background-color: #EFEFEF";
+            xBtn.style = "background-color: yellow";
+            oBtn.style = "background-color: #EFEFEF";
         }
     })
 
-    changeSign.addEventListener('click', () => {
-        if(!isGameStart()){
+    oBtn.addEventListener('click', () => {
+        if(!isGameStart() && !duo){
             player1.sign = 'o';
             player2.sign = 'x';
-            changeSign.style = "background-color: yellow;";
-            continueBtn.style = "background-color: #EFEFEF;";
+            oBtn.style = "background-color: yellow;";
+            xBtn.style = "background-color: #EFEFEF;";
             computerMove();
         }
-    })
+    })    
 }
 
 function createPlayer(role, sign){
@@ -69,6 +72,8 @@ function createBoardItem(i, j, boardDOM){
 }
 
 function playerMove(player, boardItem){
+    const oBtn = document.querySelector("#o-button");
+    const xBtn = document.querySelector("#x-button");
     if(!isBoardFull() && !finish){
         const row = boardItem.id[2];
         const col = boardItem.id[3];
@@ -87,9 +92,13 @@ function playerMove(player, boardItem){
             else{
                 if(player.sign === 'x'){
                     player1.sign = 'o'
+                    oBtn.style = "background-color: yellow;";
+                    xBtn.style = "background-color: #EFEFEF;";
                 }
                 else{
                     player1.sign = 'x';
+                    xBtn.style = "background-color: yellow";
+                    oBtn.style = "background-color: #EFEFEF";
                 }
                 if(winCheck() != undefined){
                     finish = true;
@@ -100,6 +109,7 @@ function playerMove(player, boardItem){
         }
     }                
 }
+
 
 function computerMove(){
     if(isBoardFull()){
@@ -212,6 +222,10 @@ function cleanBoard(){
             finish = false;
         }
     }
+    const oBtn = document.querySelector("#o-button");
+    const xBtn = document.querySelector("#x-button");
+    xBtn.style = "background-color: yellow";
+    oBtn.style = "background-color: #EFEFEF";
 
 }
 
@@ -282,7 +296,9 @@ function playDuoDOM(){
     const names = document.createElement("div");
     names.id = "names";
     const name1Div = document.createElement("div");
+    name1Div.className = "name1";
     const name2Div = document.createElement("div");
+    name2Div.className = "name2";
 
     const subBtn = document.createElement("button");
     subBtn.id = "submit-names";
