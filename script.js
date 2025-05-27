@@ -161,6 +161,7 @@ function result(){
         }
         else{
             result.textContent = `${(winCheck() === 'x')?name1Input.value:name2Input.value} wins. It was hard game`;
+            
         }
     }
     
@@ -213,6 +214,7 @@ function result(){
         playBot.remove();
     })
 }
+
 
 function cleanBoard(){
     for(let i = 0; i < 3; i++){
